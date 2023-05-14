@@ -2,6 +2,7 @@ import React ,{useState} from "react";
 import axios from "axios";
 import "./Weather.css";
 export default function  Weather(){
+    const[ready,setReady]=useState(false);
     const [temperature,setTemperature]=useState(null);
     let apiKey="0bfb3b656ee7a30b48d0696156d040e0";
     let city="london"
