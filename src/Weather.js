@@ -1,24 +1,25 @@
 import React ,{useState} from "react";
 import axios from "axios";
 import "./Weather.css";
-export default function  Weather(){
-    const[ready,setReady]=useState(false);
+export default function  Weather(props){
+    
     const[weatherData,setWeatherData]=useState({ready:false});
 
     function handleResponse(response){
         console.log(response.data);
         setWeatherData({
+            ready: true,
             temperature:response.data.main.temp,
             humidity:response.data.main.humidity,
             iconUrl:"https://ssl.gstatic.com/onebox/weather/64/partly_cloudy.png",
-            description:response.data.Weather[0].description,
+            description: response.data.weather[0].description,
             wind:response.data.wind.speed,
             city:response.data.name
         })
         
-        setReady(true);
+        
     }
-    if(ready){
+    if( weatherData.ready){
         return(
         <div className="Weather">
             <form>
@@ -37,14 +38,14 @@ export default function  Weather(){
                 <li>
                     wednesday 
                 </li>
-                <li>
+                <li className="text-capitalize">
                  {weatherData.description}
                 </li>
             </ul>
             <div className="row">
                 <div className="col-6     text-start" >
                     <img src={weatherData.iconUrl} alt={weatherData.description}/> 
-                    <span className="temperature">{weatherData.temperature}</span>
+                    <span className="temperature"> {Math.round(weatherData.temperature)}</span>
                     <span className="unit">℃</span>
                 </div>
                 <div className="col-6">
@@ -67,7 +68,7 @@ export default function  Weather(){
     }else{
         let apiKey="0bfb3b656ee7a30b48d0696156d040e0";
         let city="London"
-        let apiUrl=`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+        let apiUrl=`https://api.openweathermap.org/data/2.5/weather?q=${props.defaultCity}&appid=${apiKey}&units=metric`;
         axios.get(apiUrl).then(handleResponse)
 
         return "Loading ...."
